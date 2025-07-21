@@ -3,16 +3,21 @@
 # Exit on error
 set -e
 
-# Clone dotfiles first
-echo "Cloning dotfiles..."
-git clone https://github.com/IslamEssam01/dotfiles ~/dotfiles
+# Source other scripts early (but configs.sh functions are called later)
+source ./configs.sh  # Source configs.sh here for setup_ssh_key
+
+# Set up SSH key for GitHub
+setup_ssh_key
+
+# Clone dotfiles using SSH
+echo "Cloning dotfiles via SSH..."
+git clone git@github.com:IslamEssam01/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 # Assuming stow is used for dotfiles; install it early if needed
 sudo pacman -S --needed --noconfirm stow
 
-# Source other scripts
+# Source remaining scripts (packages.sh can be sourced now)
 source ./packages.sh
-source ./configs.sh
 
 # Install AUR helper (yay)
 echo "Installing yay AUR helper..."

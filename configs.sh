@@ -1,5 +1,40 @@
 #!/bin/bash
 
+# Set up SSH key for GitHub
+setup_ssh_key() {
+    echo "Setting up SSH key for GitHub..."
+
+    # Check if SSH key already exists
+    if [ ! -f ~/.ssh/id_ed25519 ]; then
+        # Prompt for email
+        echo "Enter your email for the SSH key comment (e.g., your_email@example.com):"
+        read -r EMAIL
+        if [ -z "$EMAIL" ]; then
+            EMAIL="your_email@example.com"  # Default if empty
+        fi
+
+        ssh-keygen -t ed25519 -C "$EMAIL" -f ~/.ssh/id_ed25519 -N ""
+        eval "$(ssh-agent -s)"
+        ssh-add ~/.ssh/id_ed25519
+    else
+        echo "Existing SSH key found at ~/.ssh/id_ed25519. Skipping generation."
+    fi
+
+    # Display public key and prompt user to add to GitHub
+    echo "Your public SSH key is:"
+    cat ~/.ssh/id_ed25519.pub
+    echo ""
+    echo "1. Copy the above key."
+    echo "2. Go to GitHub > Settings > SSH and GPG keys > New SSH key."
+    echo "3. Paste the key and save."
+    echo "Press Enter once added to GitHub..."
+    read -r
+
+    # Test SSH connection
+    ssh -T git@github.com
+    echo "SSH setup complete."
+}
+
 # NVIDIA driver configuration (inspired by Omarchy)
 configure_nvidia_drivers() {
     if lspci | grep -i nvidia &> /dev/null; then
