@@ -24,7 +24,7 @@ install_packages() {
 # Core utilities and tools
 install_core_packages() {
     echo "Installing core packages..."
-    install_packages stow uwsm htop nvtop sddm hyprland zsh fd zoxide fzf starship pass git-delta ripgrep nnn tree poppler glow ueberzug archivemount zip unzip pmount util-linux udisks2 atool unrar advcpmv rclone fuse2 fuse3 imagemagick zathura xdg-utils yazi eza dragon-drop ouch unarchiver bashmount ffmpegthumbnailer trash-cli selectdefaultapplication-git pamixer playerctl brightnessctl lm_sensors rofi-lbonn-wayland-git networkmanager network-manager-applet vlc 7zip breeze breeze5 dust duf ncdu bat pulsemixer grim slurp hyprshot simple-mtpfs walker bluez bluez-utils blueman ntfs-3g
+    install_packages stow uwsm htop nvtop sddm hyprland zsh fd zoxide fzf starship pass git-delta ripgrep nnn tree poppler glow ueberzug archivemount zip unzip pmount util-linux udisks2 atool unrar advcpmv rclone fuse2 fuse3 imagemagick zathura xdg-utils yazi eza dragon-drop ouch unarchiver bashmount ffmpegthumbnailer trash-cli selectdefaultapplication-git pamixer playerctl brightnessctl lm_sensors rofi-lbonn-wayland-git networkmanager network-manager-applet vlc 7zip breeze breeze5 dust duf ncdu bat pulsemixer grim slurp hyprshot simple-mtpfs walker elephant elephant-desktopapplications elephant-unicode elephant-clipboard elephant-archlinuxpkgs elephant-runner elephant-todo elephant-websearch elephant-calc elephant-files elephant-symbols elephant-providerlist elephant-menus bluez bluez-utils blueman ntfs-3g
 }
 
 # Hyprland/Wayland-specific packages
