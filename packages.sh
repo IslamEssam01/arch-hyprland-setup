@@ -48,5 +48,5 @@ install_utilities() {
 # Fonts
 install_fonts() {
     echo "Installing fonts..."
-    install_packages ttf-jetbrains-mono-nerd noto-fonts-emoji otf-font-awesome
+    install_packages ttf-jetbrains-mono-nerd noto-fonts-emoji otf-font-awesome ttf-dejavu
 }
