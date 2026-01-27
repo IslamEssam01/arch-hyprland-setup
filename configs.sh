@@ -31,7 +31,7 @@ setup_ssh_key() {
     read -r
 
     # Test SSH connection
-    ssh -T git@github.com
+    ssh -T git@github.com || true
     echo "SSH setup complete."
 }
 
