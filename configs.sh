@@ -1,37 +1,41 @@
 #!/bin/bash
 
-# Set up SSH key for GitHub
+# Set up SSH key for GitHub via gh CLI device flow (idempotent)
+# Requires github-cli and openssh to be installed before this is called.
 setup_ssh_key() {
     echo "Setting up SSH key for GitHub..."
 
-    # Check if SSH key already exists
+    # Generate key if missing
     if [ ! -f ~/.ssh/id_ed25519 ]; then
-        # Prompt for email
-        echo "Enter your email for the SSH key comment (e.g., your_email@example.com):"
-        read -r EMAIL
-        if [ -z "$EMAIL" ]; then
-            EMAIL="your_email@example.com"  # Default if empty
-        fi
-
-        ssh-keygen -t ed25519 -C "$EMAIL" -f ~/.ssh/id_ed25519 -N ""
-        eval "$(ssh-agent -s)"
-        ssh-add ~/.ssh/id_ed25519
+        local KEY_COMMENT
+        KEY_COMMENT="$(git config --global user.email 2>/dev/null || hostname)"
+        ssh-keygen -t ed25519 -C "$KEY_COMMENT" -f ~/.ssh/id_ed25519 -N ""
     else
         echo "Existing SSH key found at ~/.ssh/id_ed25519. Skipping generation."
     fi
 
-    # Display public key and prompt user to add to GitHub
-    echo "Your public SSH key is:"
-    cat ~/.ssh/id_ed25519.pub
-    echo ""
-    echo "1. Copy the above key."
-    echo "2. Go to GitHub > Settings > SSH and GPG keys > New SSH key."
-    echo "3. Paste the key and save."
-    echo "Press Enter once added to GitHub..."
-    read -r
+    eval "$(ssh-agent -s)" >/dev/null
+    ssh-add ~/.ssh/id_ed25519 2>/dev/null || true
 
-    # Test SSH connection
-    ssh -T git@github.com || true
+    # Authenticate gh if needed (device flow: one short code, one browser visit).
+    # --skip-ssh-key: don't trigger gh's interactive key-upload prompt here; we
+    # upload the key explicitly below. --scopes: needed for `gh ssh-key add`.
+    if ! gh auth status -h github.com &>/dev/null; then
+        echo "Launching gh device-flow login..."
+        gh auth login --git-protocol ssh --hostname github.com --web \
+            --scopes "admin:public_key" --skip-ssh-key
+    fi
+
+    # Register the public key on GitHub if not already present
+    local KEY_TITLE="arch-setup-$(hostname)"
+    if gh ssh-key list 2>/dev/null | grep -qF "$KEY_TITLE"; then
+        echo "SSH key '$KEY_TITLE' already registered on GitHub. Skipping."
+    else
+        gh ssh-key add ~/.ssh/id_ed25519.pub --title "$KEY_TITLE"
+    fi
+
+    # Smoke test (don't fail the script on the GitHub "successful auth" non-zero exit)
+    ssh -T -o StrictHostKeyChecking=accept-new git@github.com || true
     echo "SSH setup complete."
 }
 
@@ -60,7 +64,9 @@ configure_nvidia_drivers() {
         # Enable multilib repository for 32-bit libraries
         if ! grep -q "^\[multilib\]" /etc/pacman.conf; then
             sudo sed -i '/^#\[multilib\]/,/^#Include/ s/^#//' /etc/pacman.conf
-            sudo pacman -Sy  # Sync after enabling multilib
+            # -Syu (not bare -Sy): sync the newly enabled repo AND upgrade, so we
+            # never install against a partially-synced DB (avoids broken deps).
+            sudo pacman -Syu --noconfirm
         fi
 
         # Install packages using our install_packages function
@@ -103,12 +109,17 @@ configure_nvidia_drivers() {
     fi
 }
 
-# Stow dotfiles
+# Stow dotfiles. The repo is a single flat package whose tree mirrors $HOME, so
+# it's stowed with package "." from inside the repo (stow reads the dir itself,
+# including hidden entries like .config/.zshrc). --adopt absorbs any pre-existing
+# real files, then `git checkout` restores tracked content so the repo wins.
+# NOTE: on re-runs this discards uncommitted edits inside ~/dotfiles.
 stow_dotfiles() {
     echo "Stowing dotfiles..."
     cd ~/dotfiles
-    stow -v -t ~ *  # Stow all subdirectories to home; adjust if needed (e.g., specific dirs like 'stow hyprland zsh')
-    echo "Dotfiles stowed. If conflicts occurred, resolve them manually."
+    stow --adopt -v -t ~ .
+    git -C ~/dotfiles checkout -- .
+    echo "Dotfiles stowed."
 }
 
 # Enable services
@@ -129,10 +140,18 @@ configure_sysctl() {
     sudo sysctl --load=/etc/sysctl.d/dirty.conf
 }
 
-# oh-my-zsh and plugins (post-zsh install)
+# Install oh-my-zsh framework + zsh-autosuggestions via plain git clones,
+# avoiding the upstream installer (which writes a template ~/.zshrc and would
+# clobber the stowed symlink). The dotfiles' .zshrc already loads oh-my-zsh.
 install_oh_my_zsh() {
     echo "Installing oh-my-zsh..."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-    echo "Add 'plugins=(zsh-autosuggestions)' to ~/.zshrc"
+    if [ ! -d ~/.oh-my-zsh ]; then
+        git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
+    fi
+
+    local CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+    if [ ! -d "$CUSTOM/plugins/zsh-autosuggestions" ]; then
+        git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions \
+            "$CUSTOM/plugins/zsh-autosuggestions"
+    fi
 }
