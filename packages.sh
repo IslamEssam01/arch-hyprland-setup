@@ -44,7 +44,7 @@ install_audio_packages() {
 # Utilities and extras
 install_utilities() {
     echo "Installing utilities..."
-    install_packages kanata # fusermount is provided by fuse2/fuse3, so removed redundant entry
+    install_packages kanata antimicrox # fusermount is provided by fuse2/fuse3, so removed redundant entry
 }
 
 # Fonts
