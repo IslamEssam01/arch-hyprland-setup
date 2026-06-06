@@ -32,7 +32,7 @@ install_core_packages() {
 # Hyprland/Wayland-specific packages
 install_hyprland_packages() {
     echo "Installing Hyprland packages..."
-    install_packages wlr-randr swaybg hypridle wl-clipboard gtklock lxappearance nwg-look qt5ct qt6ct waybar python-gobject dunst xdg-desktop-portal-hyprland hyprpolkitagent sway-audio-idle-inhibit-git qt5-wayland qt6-wayland adw-gtk-theme wvkbd
+    install_packages wlr-randr swaybg hypridle wl-clipboard gtklock lxappearance nwg-look qt5ct qt6ct waybar python-gobject dunst xdg-desktop-portal-hyprland hyprpolkitagent sway-audio-idle-inhibit-git qt5-wayland qt6-wayland adw-gtk-theme gamepad-osk
 }
 
 # Audio packages (preferring Pipewire)
