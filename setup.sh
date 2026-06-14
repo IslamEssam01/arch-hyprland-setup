@@ -66,6 +66,7 @@ configure_nvidia_drivers
 
 # Run configurations
 install_oh_my_zsh
+install_tpm
 stow_dotfiles
 configure_services
 configure_sysctl

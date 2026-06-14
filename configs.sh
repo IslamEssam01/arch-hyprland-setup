@@ -155,3 +155,11 @@ install_oh_my_zsh() {
             "$CUSTOM/plugins/zsh-autosuggestions"
     fi
 }
+
+# Install tpm (tmux plugin manager) for the tmux.conf's `run` line
+install_tpm() {
+    echo "Installing tpm..."
+    if [ ! -d ~/.tmux/plugins/tpm ]; then
+        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    fi
+}
