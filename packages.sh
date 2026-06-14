@@ -26,7 +26,7 @@ install_packages() {
 # Core utilities and tools
 install_core_packages() {
     echo "Installing core packages..."
-    install_packages stow uwsm htop nvtop sddm hyprland zsh fd zoxide fzf starship pass git-delta ripgrep nnn tree poppler glow ueberzug archivemount zip unzip pmount util-linux udisks2 atool unrar advcpmv rclone fuse2 fuse3 imagemagick zathura xdg-utils yazi eza dragon-drop ouch unarchiver bashmount ffmpegthumbnailer trash-cli selectdefaultapplication-git pamixer playerctl brightnessctl lm_sensors rofi-lbonn-wayland-git networkmanager network-manager-applet vlc 7zip breeze breeze5 dust duf ncdu bat pulsemixer grim slurp hyprshot simple-mtpfs walker elephant-all-bin bluez bluez-utils blueman ntfs-3g tmux zellij lazygit
+    install_packages stow uwsm htop nvtop sddm hyprland zsh fd zoxide fzf starship pass git-delta ripgrep nnn tree poppler glow ueberzug archivemount zip unzip pmount util-linux udisks2 atool unrar advcpmv rclone fuse2 fuse3 imagemagick zathura xdg-utils yazi eza dragon-drop ouch unarchiver bashmount ffmpegthumbnailer trash-cli selectdefaultapplication-git pamixer playerctl brightnessctl lm_sensors rofi-lbonn-wayland-git networkmanager network-manager-applet vlc 7zip breeze breeze5 dust duf ncdu bat pulsemixer grim slurp hyprshot simple-mtpfs walker elephant-all-bin bluez bluez-utils blueman ntfs-3g tmux zellij lazygit tmuxp
 }
 
 # Hyprland/Wayland-specific packages
