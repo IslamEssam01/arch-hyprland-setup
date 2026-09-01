@@ -67,8 +67,12 @@ configure_nvidia_drivers
 # Run configurations
 install_oh_my_zsh
 install_tpm
+configure_kanata
 stow_dotfiles
 configure_services
 configure_sysctl
 
 echo "Setup complete! Reboot recommended."
+echo ""
+echo "Optional: run ./pcbu-setup.sh to set up PC Bio Unlock (unlock this PC"
+echo "with your phone's fingerprint/face over sudo, lock screens and polkit)."

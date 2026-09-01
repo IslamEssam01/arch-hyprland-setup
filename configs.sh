@@ -163,3 +163,25 @@ install_tpm() {
         git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
     fi
 }
+
+# kanata (keyboard remapper) needs read/write access to /dev/uinput to create
+# its virtual output device. The user must be in the `input`/`uinput` groups
+# and a udev rule must relax /dev/uinput's default root-only permissions.
+# kanata.service itself is stowed via ~/dotfiles (user unit, already enabled).
+configure_kanata() {
+    echo "Configuring kanata udev/group access..."
+
+    for grp in input uinput; do
+        if ! id -nG "$USER" | grep -qw "$grp"; then
+            sudo usermod -aG "$grp" "$USER"
+            echo "Added $USER to '$grp' group (log out/in for it to take effect)."
+        fi
+    done
+
+    local RULE=/etc/udev/rules.d/99-kanata-uinput.rules
+    if [ ! -f "$RULE" ]; then
+        echo 'KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"' | sudo tee "$RULE" >/dev/null
+        sudo udevadm control --reload
+        sudo udevadm trigger --subsystem-match=misc
+    fi
+}
