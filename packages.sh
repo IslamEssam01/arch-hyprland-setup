@@ -26,13 +26,13 @@ install_packages() {
 # Core utilities and tools
 install_core_packages() {
     echo "Installing core packages..."
-    install_packages stow uwsm htop nvtop sddm hyprland zsh fd zoxide fzf starship pass git-delta ripgrep nnn tree poppler glow ueberzug archivemount zip unzip pmount util-linux udisks2 atool unrar advcpmv rclone fuse2 fuse3 imagemagick zathura xdg-utils yazi eza dragon-drop ouch unarchiver bashmount ffmpegthumbnailer trash-cli selectdefaultapplication-git pamixer playerctl brightnessctl lm_sensors rofi-lbonn-wayland-git networkmanager network-manager-applet vlc 7zip breeze breeze5 dust duf ncdu bat pulsemixer grim slurp hyprshot simple-mtpfs walker elephant-all-bin bluez bluez-utils blueman ntfs-3g tmux zellij lazygit tmuxp herdr-bin
+    install_packages stow uwsm htop nvtop sddm hyprland zsh fd zoxide fzf starship pass git-delta ripgrep nnn tree poppler glow ueberzug archivemount zip unzip pmount util-linux udisks2 atool unrar advcpmv rclone fuse2 fuse3 imagemagick zathura xdg-utils yazi eza dragon-drop ouch unarchiver bashmount ffmpegthumbnailer trash-cli selectdefaultapplication-git pamixer playerctl brightnessctl lm_sensors rofi-lbonn-wayland-git networkmanager network-manager-applet vlc 7zip breeze breeze5 dust duf ncdu bat pulsemixer grim slurp hyprshot simple-mtpfs walker elephant-all-bin bluez bluez-utils blueman ntfs-3g tmux zellij lazygit tmuxp herdr-bin libqalculate
 }
 
 # Hyprland/Wayland-specific packages
 install_hyprland_packages() {
     echo "Installing Hyprland packages..."
-    install_packages wlr-randr swaybg hypridle wl-clipboard gtklock lxappearance nwg-look qt5ct qt6ct waybar python-gobject dunst xdg-desktop-portal-hyprland hyprpolkitagent sway-audio-idle-inhibit-git qt5-wayland qt6-wayland adw-gtk-theme gamepad-osk
+    install_packages wlr-randr swaybg hypridle wl-clipboard gtklock lxappearance nwg-look qt5ct qt6ct waybar python-gobject dunst xdg-desktop-portal-hyprland hyprpolkitagent sway-audio-idle-inhibit-git qt5-wayland qt6-wayland adw-gtk-theme gamepad-osk hyprpicker
 }
 
 # Audio packages (preferring Pipewire)
@@ -44,7 +44,7 @@ install_audio_packages() {
 # Utilities and extras
 install_utilities() {
     echo "Installing utilities..."
-    install_packages kanata antimicrox coolercontrol-bin # fusermount is provided by fuse2/fuse3, so removed redundant entry
+    install_packages kanata antimicrox coolercontrol-bin speedtest-cli wf-recorder localsend gpu-screen-recorder      # fusermount is provided by fuse2/fuse3, so removed redundant entry
 }
 
 # Fonts
