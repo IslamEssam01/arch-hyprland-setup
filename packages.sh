@@ -26,7 +26,7 @@ install_packages() {
 # Core utilities and tools
 install_core_packages() {
     echo "Installing core packages..."
-    install_packages stow uwsm htop nvtop sddm hyprland zsh fd zoxide fzf starship pass git-delta ripgrep nnn tree poppler glow ueberzug archivemount zip unzip pmount util-linux udisks2 atool unrar advcpmv rclone fuse2 fuse3 imagemagick zathura xdg-utils yazi eza dragon-drop ouch unarchiver bashmount ffmpegthumbnailer trash-cli selectdefaultapplication-git pamixer playerctl brightnessctl lm_sensors rofi-lbonn-wayland-git networkmanager network-manager-applet vlc 7zip breeze breeze5 dust duf ncdu bat pulsemixer grim slurp hyprshot simple-mtpfs walker elephant-all-bin bluez bluez-utils blueman ntfs-3g tmux zellij lazygit tmuxp herdr-bin libqalculate
+    install_packages stow uwsm htop nvtop sddm hyprland zsh fd zoxide fzf starship pass git-delta ripgrep nnn tree poppler glow ueberzug archivemount zip unzip pmount util-linux udisks2 atool unrar advcpmv rclone fuse2 fuse3 imagemagick zathura xdg-utils yazi eza dragon-drop ouch unarchiver bashmount ffmpegthumbnailer trash-cli selectdefaultapplication-git pamixer playerctl brightnessctl lm_sensors rofi-lbonn-wayland-git networkmanager network-manager-applet vlc 7zip breeze breeze5 dust duf ncdu bat pulsemixer grim slurp hyprshot simple-mtpfs walker elephant-all-bin bluez bluez-utils blueman ntfs-3g tmux zellij lazygit tmuxp herdr-bin libqalculate ffmpeg jq zbar nodejs npm libnotify curl
 }
 
 # Hyprland/Wayland-specific packages
@@ -44,7 +44,7 @@ install_audio_packages() {
 # Utilities and extras
 install_utilities() {
     echo "Installing utilities..."
-    install_packages kanata antimicrox coolercontrol-bin speedtest-cli wf-recorder localsend gpu-screen-recorder mpv mpv-mpris      # fusermount is provided by fuse2/fuse3, so removed redundant entry
+    install_packages kanata antimicrox coolercontrol-bin wf-recorder localsend gpu-screen-recorder mpv mpv-mpris      # fusermount is provided by fuse2/fuse3, so removed redundant entry
 }
 
 # Fonts

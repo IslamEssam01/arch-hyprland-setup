@@ -134,7 +134,10 @@ configure_services() {
     local USER_SYSTEMD_DIR="$HOME/.config/systemd/user"
     if [ -d "$USER_SYSTEMD_DIR" ]; then
         echo "Reloading user systemd daemon and enabling user services..."
-        systemctl --user daemon-reload
+        if ! systemctl --user daemon-reload; then
+            echo "Warning: no user systemd/D-Bus session available; skipping user service setup." >&2
+            return
+        fi
 
         for unit in "$USER_SYSTEMD_DIR"/*.service; do
             [ -e "$unit" ] || continue
