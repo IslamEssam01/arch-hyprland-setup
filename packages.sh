@@ -32,7 +32,7 @@ install_core_packages() {
 # Hyprland/Wayland-specific packages
 install_hyprland_packages() {
     echo "Installing Hyprland packages..."
-    install_packages wlr-randr swaybg hypridle wl-clipboard gtklock lxappearance nwg-look qt5ct qt6ct waybar python-gobject dunst xdg-desktop-portal-hyprland hyprpolkitagent sway-audio-idle-inhibit-git qt5-wayland qt6-wayland adw-gtk-theme gamepad-osk hyprpicker
+    install_packages wlr-randr swaybg hypridle wl-clipboard gtklock lxappearance nwg-look qt5ct qt6ct waybar python-gobject dunst xdg-desktop-portal-hyprland hyprpolkitagent sway-audio-idle-inhibit-git qt5-wayland qt6-wayland adw-gtk-theme gamepad-osk hyprpicker hyprsunset
 }
 
 # Audio packages (preferring Pipewire)
@@ -44,7 +44,7 @@ install_audio_packages() {
 # Utilities and extras
 install_utilities() {
     echo "Installing utilities..."
-    install_packages kanata antimicrox coolercontrol-bin speedtest-cli wf-recorder localsend gpu-screen-recorder      # fusermount is provided by fuse2/fuse3, so removed redundant entry
+    install_packages kanata antimicrox coolercontrol-bin speedtest-cli wf-recorder localsend gpu-screen-recorder mpv mpv-mpris      # fusermount is provided by fuse2/fuse3, so removed redundant entry
 }
 
 # Fonts
