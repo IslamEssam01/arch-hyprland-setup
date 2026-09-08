@@ -129,6 +129,29 @@ configure_services() {
     sudo systemctl enable NetworkManager
     sudo systemctl enable bluetooth
     sudo systemctl start bluetooth
+
+    # Enable all valid user services found in ~/.config/systemd/user
+    local USER_SYSTEMD_DIR="$HOME/.config/systemd/user"
+    if [ -d "$USER_SYSTEMD_DIR" ]; then
+        echo "Reloading user systemd daemon and enabling user services..."
+        systemctl --user daemon-reload
+
+        for unit in "$USER_SYSTEMD_DIR"/*.service; do
+            [ -e "$unit" ] || continue
+
+            # Skip masked units (e.g. symlinked to /dev/null like dunst.service)
+            if [ "$(readlink "$unit")" = "/dev/null" ]; then
+                continue
+            fi
+
+            # Only enable if the service has an [Install] section
+            # (systemctl enable fails with exit 1 if no [Install] block is present)
+            if grep -q '^\[Install\]' "$unit"; then
+                echo "  Enabling user service: $(basename "$unit")"
+                systemctl --user enable "$(basename "$unit")"
+            fi
+        done
+    fi
 }
 
 # Sysctl hack for realistic copy times to flash drives
@@ -167,7 +190,7 @@ install_tpm() {
 # kanata (keyboard remapper) needs read/write access to /dev/uinput to create
 # its virtual output device. The user must be in the `input`/`uinput` groups
 # and a udev rule must relax /dev/uinput's default root-only permissions.
-# kanata.service itself is stowed via ~/dotfiles (user unit, already enabled).
+# kanata.service itself is stowed via ~/dotfiles and enabled in configure_services.
 configure_kanata() {
     echo "Configuring kanata udev/group access..."
 
